@@ -48,6 +48,17 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 20px;
+}
+
+.search, .cancel {
+    width: 200px;
+    height: auto;
+    padding: 10px;
+}
+
+.cancel{
+    background-color: palevioletred;
 }
 
 .item-card {
