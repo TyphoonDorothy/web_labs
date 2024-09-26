@@ -25,26 +25,25 @@ export const clearInputs = () => {
 };
 
 export const addItemToPage = ({ id, name, volume, passengers }) => {
-  console.log("Adding item:", id, name, volume, passengers); // Debugging
+  console.log("Adding item:", id, name, volume, passengers);
 
   itemsContainer.insertAdjacentHTML(
-    "afterbegin", // Insert at the beginning of the container
+    "afterbegin",
     itemTemplate({ id, name, volume, passengers })
   );
 };
 
 export const getInputValues = () => {
   return {
-    id: Math.random().toString(36).substr(2, 9), // Unique ID for each item
+    id: Math.random().toString(36).substr(2, 9),
     name: inputName.value,
     volume: inputVolume.value,
     passengers: inputPassengers.value,
   };
 };
 
-// Rendering items list (optional, if you load items from somewhere else)
 export const renderItemsList = (items) => {
-  itemsContainer.innerHTML = ""; // Clear container before rendering
+  itemsContainer.innerHTML = "";
 
   for (const item of items) {
     addItemToPage(item);

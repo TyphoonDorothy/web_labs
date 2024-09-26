@@ -3,6 +3,7 @@ body {
     background-color: rgb(246, 251, 255);
     display: flex;
     flex-direction: row;
+    color: cadetblue;
 }
 
 .enter {
@@ -94,4 +95,10 @@ button:hover {
 .btn-info {
     margin: 10px;
     width: 300px;
+}
+
+.sort-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
