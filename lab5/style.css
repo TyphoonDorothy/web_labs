@@ -1,0 +1,169 @@
+body {
+    font-family: 'Space Grotesk';
+    background-color: rgb(246, 251, 255);
+    display: flex;
+    flex-direction: column; /* Change this to column to stack items vertically */
+    align-items: center;    /* This will center content horizontally */
+    min-height: 100vh; /* Ensure the body takes up the full viewport height */
+    color: cadetblue;
+}
+
+.enter {
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    padding: 20px 50px;
+}
+
+input {
+    border: none;
+    border-radius: 5px;
+    width: 25vw;
+    height: 35px;
+    box-shadow: 0px 9px 13px 2px rgba(219,217,255,0.63);
+}
+
+h3 {
+    font-weight: 300;
+    color: cadetblue;
+}
+
+button {
+    border: none;
+    border-radius: 30px;
+    width: 25vw;
+    height: 50px;
+    background-color: cadetblue;
+    color: aliceblue;
+    font-family: 'Space Grotesk';
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.5s ease;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.contains {
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    gap: 20px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+.count_sort {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.search, .cancel {
+    width: 200px;
+    height: auto;
+    padding: 10px;
+}
+
+.cancel{
+    background-color: palevioletred;
+}
+
+.item-card {
+    width: 30vw; 
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.items-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-container__image {
+    width: auto;
+    height: 150px;
+    margin-right: 10px;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-title, .card-text-volume, .card-text-passengers {
+    margin: 5px 0;
+    color: cadetblue; 
+}
+
+.btn-info {
+    margin: 10px;
+    width: 300px;
+}
+
+.sort-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.modal {
+    display: none;
+    display: flex;
+    position: fixed; 
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-self: center; 
+    align-self: center;  
+}
+
+
+.creation {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 90%;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    align-self: center;
+    justify-self: center;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
