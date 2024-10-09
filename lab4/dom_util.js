@@ -36,11 +36,12 @@ export const addItemToPage = ({ id, name, volume, passengers }) => {
 export const getInputValues = () => {
   return {
     id: Math.random().toString(36).substr(2, 9),
-    name: inputName.value,
-    volume: inputVolume.value,
-    passengers: inputPassengers.value,
+    name: inputName.value.trim(), // Using trim() to avoid whitespace
+    volume: inputVolume.value.trim(),
+    passengers: inputPassengers.value.trim(),
   };
 };
+
 
 export const renderItemsList = (items) => {
   itemsContainer.innerHTML = "";
@@ -49,3 +50,26 @@ export const renderItemsList = (items) => {
     addItemToPage(item);
   }
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+  const modal = document.getElementById("modal");
+  const openModalBtn = document.getElementById("create-plane");
+  const closeModalBtn = document.getElementsByClassName("close-btn")[0];
+
+  // Open modal when button is clicked
+  openModalBtn.onclick = function() {
+      modal.style.display = "block";
+  };
+
+  // Close modal when close button (X) is clicked
+  closeModalBtn.onclick = function() {
+      modal.style.display = "none";
+  };
+
+  // Close modal when clicking outside of the modal content
+  window.onclick = function(event) {
+      if (event.target == modal) {
+          modal.style.display = "none";
+      }
+  };
+});

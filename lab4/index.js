@@ -5,6 +5,11 @@ import {
     getInputValues,
 } from "./dom_util.js";
 
+const inputName = document.getElementById('input-name');
+const inputVolume = document.getElementById('input-volume');
+const inputPassengers = document.getElementById('input-passengers');
+const itemsContainer = document.getElementById('items-container');
+const modal = document.getElementById("modal");
 const create = document.getElementById('create');
 const findInput = document.getElementById('search-input');
 const findButton = document.getElementById('search');
@@ -13,18 +18,58 @@ const countPassengersButton = document.getElementById('count-passengers');
 const passengerCountDisplay = document.getElementById('passenger-count');
 const sortButton = document.getElementById('sort-button');
 const sortOptions = document.getElementById('sort-options');
+const openModalBtn = document.getElementById("create-plane");
+const closeModalBtn = document.getElementsByClassName("close-btn")[0];
 
 let planes = []; 
+let currentEditId = null;
+
+const handleEdit = (id) => {
+    const itemToEdit = planes.find(plane => plane.id === id);
+    
+    if (itemToEdit) {
+        currentEditId = id;
+
+        inputName.value = itemToEdit.name;
+        inputVolume.value = itemToEdit.volume;
+        inputPassengers.value = itemToEdit.passengers;
+
+        modal.style.display = "flex";
+    }
+};
 
 create.addEventListener('click', (event) => {
     event.preventDefault();
-    let value = getInputValues();
-    if (value != -1) {
-        console.log(value);
+
+    const value = getInputValues();
+
+    if (!value.name || !value.volume || !value.passengers) {
+        alert("Please fill in all fields to create a plane.");
+        return;
+    }
+
+    if (currentEditId) {
+        const index = planes.findIndex(plane => plane.id === currentEditId);
+        if (index !== -1) {
+            planes[index] = { ...planes[index], ...value };
+            currentEditId = null;
+        }
+    } else {
         planes.push(value);
-        addItemToPage(value);
-        console.log(planes);
-        clearInputs();
+    }
+
+    renderItemsList(planes);
+    clearInputs();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    modal.style.display = "none";
+});
+
+document.addEventListener("click", (event) => {
+    if (event.target && event.target.classList.contains("btn-info")) {
+        const id = event.target.id.split("-")[0];
+        handleEdit(id);
     }
 });
 
@@ -32,7 +77,7 @@ findButton.addEventListener("click", () => {
     const foundPlane = planes.filter(
       (plane) => plane.name.search(findInput.value) !== -1
     );
-  
+
     renderItemsList(foundPlane);
 });
   
@@ -59,3 +104,20 @@ sortButton.addEventListener('click', () => {
 
     renderItemsList(planes);
 });
+
+openModalBtn.onclick = function() {
+    modal.style.display = "block";
+};
+
+closeModalBtn.onclick = function() {
+    modal.style.display = "none";
+    clearInputs();
+};
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+        clearInputs();
+    }
+};
+
