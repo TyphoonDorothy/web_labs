@@ -16,12 +16,19 @@ const baseRequest = async ({urlPath = "", method = "GET", body = null}) => {
             ReqParams.body = JSON.stringify(body);
         }
 
-        return await fetch(`${RESOURCE_URL}${urlPath}`, ReqParams);
+        const response = await fetch(`${RESOURCE_URL}${urlPath}`, ReqParams);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`); // Throws if response is not OK
+        }
+        
+        return response; // Return the response object
     }
     catch (error) {
         console.error("Error in baseRequest:", error); 
     }
 }
+
 
 export const getAllPLanes = async () => {
     const rawResp = await baseRequest ({method: "GET"});

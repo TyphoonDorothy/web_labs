@@ -9,8 +9,10 @@ import {
     getAllPLanes,
     postPlanes,
     deletePlanes,
+    updatePlanes,
 } from "./API/api.js";
 
+// Existing element selections
 const inputName = document.getElementById('input-name');
 const inputVolume = document.getElementById('input-volume');
 const inputPassengers = document.getElementById('input-passengers');
@@ -27,91 +29,86 @@ const sortOptions = document.getElementById('sort-options');
 const openModalBtn = document.getElementById("create-plane");
 const closeModalBtn = document.getElementsByClassName("close-btn")[0];
 
-let planes = []; 
+let planes = [];
 let currentEditId = null;
-
-const handleEdit = (id) => {
-    const itemToEdit = planes.find(plane => plane.id === id);
-    
-    if (itemToEdit) {
-        currentEditId = id;
-
-        inputName.value = itemToEdit.name;
-        inputVolume.value = itemToEdit.volume;
-        inputPassengers.value = itemToEdit.passengers;
-
-        modal.style.display = "flex";
-    }
-};
 
 create.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    const value = getInputValues(); 
-
-    if (!value.name || !value.volume || !value.passengers) {
-        alert("Please fill in all fields to create a plane.");
-        return;
-    }
+    const { name, volume, passengers } = getInputValues();
+    clearInputs();
 
     if (currentEditId) {
-        const index = planes.findIndex(plane => plane.id === currentEditId);
-        if (index !== -1) {
-            planes[index] = { ...planes[index], ...value };
-            currentEditId = null;
-        }
+        await updatePlanes(currentEditId, { name, volume, passengers });
+        currentEditId = null;
     } else {
-        const newPlaneData = {
-            name: value.name,
-            volume: value.volume,  
-            passengers: value.passengers,
-        };
-
-        try {
-            await postPlanes(newPlaneData);
-            planes.push(newPlaneData);
-            renderItemsList(planes); 
-        } catch (error) {
-            console.error('Error adding plane:', error);
-            alert('Error adding plane. Please check the console for details.');
-        }
+        await postPlanes({ name, volume, passengers });
     }
-    
-    clearInputs();
+
+    refetchAllPlanes();
 });
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "none";
     document.body.classList.add('loaded');
-    fetch('http://localhost:1337/planes')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+    refetchAllPlanes();
+});
+
+const onRemoveItem = async (element) => {
+    const id = element.target.id.split('-')[0];
+    await deletePlanes(id);
+    refetchAllPlanes();
+}
+
+const onEditItem = async (id) => {
+
+    const planeToEdit = planes.find(plane => plane.id == id);
+    if (planeToEdit) {
+        inputName.value = planeToEdit.name;
+        inputVolume.value = planeToEdit.volume;
+        inputPassengers.value = planeToEdit.passengers;
+        currentEditId = planeToEdit.id;
+        modal.style.display = "block";
+    } else {
+        console.error("Plane not found for ID:", id);
+        alert("Error: Plane not found.");
+    }
+};
+
+
+document.addEventListener("click", async (event) => {
+    if (event.target && event.target.classList.contains("btn-info")) {
+        console.log("Edit button clicked, ID:", event.target.id);
+        await onEditItem(event);
+    }
+
+    if (event.target && event.target.classList.contains("btn-del")) {
+        const confirmDelete = confirm("Are you sure you want to delete this plane?");
+        if (confirmDelete) {
+            try {
+                await onRemoveItem(event);
+            } catch (error) {
+                console.error(`Error deleting plane:`, error);
+                alert('Error deleting plane. Please try again.');
+            }
         }
-        return response.json();
-    })
-    .then(data => console.log(data))
-    .catch(error => console.error('Fetch error:', error));
+    }
 });
 
 document.addEventListener("click", async (event) => {
     if (event.target && event.target.classList.contains("btn-info")) {
         const id = event.target.id.split("-")[0];
-        handleEdit(id);
+        console.log("Edit button clicked, ID:", id);
+        await onEditItem(event);
     }
 
     if (event.target && event.target.classList.contains("btn-del")) {
-        const id = event.target.id.split("-")[0];  // Extract plane ID
         const confirmDelete = confirm("Are you sure you want to delete this plane?");
         if (confirmDelete) {
             try {
-                await deletePlanes(id);  // Call delete API
-                // Reload the page to fetch the updated list
-                location.reload();
+                await onRemoveItem(event);
             } catch (error) {
-                console.error(`Error deleting plane with id ${id}:`, error);
+                console.error(`Error deleting plane:`, error);
                 alert('Error deleting plane. Please try again.');
             }
         }
@@ -125,11 +122,11 @@ findButton.addEventListener("click", () => {
       (plane) => plane.name.search(findInput.value) !== -1
     );
 
-    renderItemsList(foundPlane);
+    renderItemsList(foundPlane, onEditItem, onRemoveItem);
 });
   
 cancelFindButton.addEventListener("click", () => {
-    renderItemsList(planes);
+    renderItemsList(planes, onEditItem, onRemoveItem);
     findInput.value = "";
 });
 
@@ -149,7 +146,7 @@ sortButton.addEventListener('click', () => {
         planes.sort((a, b) => Number(b.passengers) - Number(a.passengers)); 
     }
 
-    renderItemsList(planes);
+    renderItemsList(planes, onEditItem, onRemoveItem);
 });
 
 openModalBtn.onclick = function() {
@@ -159,21 +156,21 @@ openModalBtn.onclick = function() {
 closeModalBtn.onclick = function() {
     modal.style.display = "none";
     clearInputs();
+    currentEditId = null;
 };
 
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
         clearInputs();
+        currentEditId = null;
     }
 };
 
 async function refetchAllPlanes() {
     const allPlanes = await getAllPLanes();
-
     planes = allPlanes;
-
-    renderItemsList(planes);
+    renderItemsList(planes, onEditItem, onRemoveItem);
 }
 
 refetchAllPlanes();

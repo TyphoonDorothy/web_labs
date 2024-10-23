@@ -12,7 +12,7 @@ const itemTemplate = ({ id, name, volume, passengers }) => `
     <p class="card-title">Name: ${name}</p>
     <p class="card-text-volume">Fuel volume: ${volume} litres</p>
     <p class="card-text-passengers">Number of passengers: ${passengers} people</p>
-    <button id="${id}-edit" type="button" class="btn-info">
+    <button id="${id}${EDIT_BUTTON_SUFFIX}" type="button" class="btn-info">
       Edit
     </button>
     <button id="${id}-delete" type="button" class="btn-del">
@@ -21,20 +21,27 @@ const itemTemplate = ({ id, name, volume, passengers }) => `
   </div>
 </li>`;
 
+export const EDIT_BUTTON_SUFFIX = '-edit';
+
 export const clearInputs = () => {
   inputName.value = "";
   inputVolume.value = "";
   inputPassengers.value = "";
 };
 
-export const addItemToPage = ({ id, name, volume, passengers }) => {
-  console.log("Adding item:", id, name, volume, passengers);
-
+export const addItemToPage = ({ id, name, volume, passengers }, onEditItem) => {
   itemsContainer.insertAdjacentHTML(
-    "afterbegin",
-    itemTemplate({ id, name, volume, passengers })
+      "afterbegin",
+      itemTemplate({ id, name, volume, passengers })
   );
+
+  const editButton = document.getElementById(`${id}${EDIT_BUTTON_SUFFIX}`);
+  editButton.addEventListener("click", (event) => {
+      event.stopPropagation(); // Prevent event bubbling
+      onEditItem(id); // Pass the ID directly
+  });
 };
+
 
 export const getInputValues = () => {
   return {
@@ -45,12 +52,11 @@ export const getInputValues = () => {
   };
 };
 
-
-export const renderItemsList = (items) => {
+export const renderItemsList = (items, onEditItem, onRemoveItem) => {
   itemsContainer.innerHTML = "";
 
   for (const item of items) {
-    addItemToPage(item);
+    addItemToPage(item, onEditItem, onRemoveItem);
   }
 };
 
@@ -60,16 +66,16 @@ document.addEventListener("DOMContentLoaded", function() {
   const closeModalBtn = document.getElementsByClassName("close-btn")[0];
 
   openModalBtn.onclick = function() {
-      modal.style.display = "block";
+    modal.style.display = "block";
   };
 
   closeModalBtn.onclick = function() {
-      modal.style.display = "none";
+    modal.style.display = "none";
   };
 
   window.onclick = function(event) {
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
   };
 });
