@@ -5,6 +5,12 @@ import {
     getInputValues,
 } from "./dom_util.js";
 
+import {
+    getAllPLanes,
+    postPlanes,
+    deletePlanes,
+} from "./API/api.js";
+
 const inputName = document.getElementById('input-name');
 const inputVolume = document.getElementById('input-volume');
 const inputPassengers = document.getElementById('input-passengers');
@@ -38,10 +44,10 @@ const handleEdit = (id) => {
     }
 };
 
-create.addEventListener('click', (event) => {
+create.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    const value = getInputValues();
+    const value = getInputValues(); 
 
     if (!value.name || !value.volume || !value.passengers) {
         alert("Please fill in all fields to create a plane.");
@@ -55,23 +61,64 @@ create.addEventListener('click', (event) => {
             currentEditId = null;
         }
     } else {
-        planes.push(value);
-    }
+        const newPlaneData = {
+            name: value.name,
+            volume: value.volume,  
+            passengers: value.passengers,
+        };
 
-    renderItemsList(planes);
+        try {
+            await postPlanes(newPlaneData);
+            planes.push(newPlaneData);
+            renderItemsList(planes); 
+        } catch (error) {
+            console.error('Error adding plane:', error);
+            alert('Error adding plane. Please check the console for details.');
+        }
+    }
+    
     clearInputs();
 });
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "none";
+    document.body.classList.add('loaded');
+    fetch('http://localhost:1337/planes')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => console.log(data))
+    .catch(error => console.error('Fetch error:', error));
 });
 
-document.addEventListener("click", (event) => {
+document.addEventListener("click", async (event) => {
     if (event.target && event.target.classList.contains("btn-info")) {
         const id = event.target.id.split("-")[0];
         handleEdit(id);
     }
+
+    if (event.target && event.target.classList.contains("btn-del")) {
+        const id = event.target.id.split("-")[0];  // Extract plane ID
+        const confirmDelete = confirm("Are you sure you want to delete this plane?");
+        if (confirmDelete) {
+            try {
+                await deletePlanes(id);  // Call delete API
+                // Reload the page to fetch the updated list
+                location.reload();
+            } catch (error) {
+                console.error(`Error deleting plane with id ${id}:`, error);
+                alert('Error deleting plane. Please try again.');
+            }
+        }
+    }
 });
+
+
 
 findButton.addEventListener("click", () => {
     const foundPlane = planes.filter(
@@ -121,3 +168,12 @@ window.onclick = function(event) {
     }
 };
 
+async function refetchAllPlanes() {
+    const allPlanes = await getAllPLanes();
+
+    planes = allPlanes;
+
+    renderItemsList(planes);
+}
+
+refetchAllPlanes();
