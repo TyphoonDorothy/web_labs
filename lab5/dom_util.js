@@ -37,8 +37,8 @@ export const addItemToPage = ({ id, name, volume, passengers }, onEditItem) => {
 
   const editButton = document.getElementById(`${id}${EDIT_BUTTON_SUFFIX}`);
   editButton.addEventListener("click", (event) => {
-      event.stopPropagation(); // Prevent event bubbling
-      onEditItem(id); // Pass the ID directly
+      event.stopPropagation();
+      onEditItem(id);
   });
 };
 
