@@ -1,0 +1,17 @@
+.primary-button {
+    background-color: lightseagreen ;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+button:hover {
+    transform: scale(1.03);
+    background-color: darkseagreen;
+    transition: transform 0.2s ease-out;
+  }
+

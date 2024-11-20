@@ -1,0 +1,165 @@
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  background-color: rgb(241, 255, 241);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  color: cadetblue;
+  padding: 0 10px;
+}
+
+a {
+  font-family: 'Space Grotesk', sans-serif;
+  text-decoration: none;
+  color: cadetblue;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: darkseagreen;
+}
+
+.logo {
+  height: 40px;
+}
+
+.nav {
+  display: flex;
+  gap: 50px; 
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+  padding: 10px 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.info {
+  display: flex;
+  padding: 15px;
+  gap: 20px;
+  align-items: center;
+}
+
+.info_img {
+  width: 25vw;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.info_img:hover {
+  transform: scale(1.03);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  max-width: 40vw;
+  align-items: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+}
+
+.prev_cards {
+  display: flex;
+  width: 80vw; 
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20vw;
+  justify-content: center;
+  align-content: space-between;
+  align-items: center;
+  border: 1px solid seagreen;
+  padding: 15px;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.card_img {
+  height: 200px;
+  width: auto;
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+.card_name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.prev {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; 
+}
+
+.prev_btn {
+  height: 40px;
+  width: 150px; 
+  border-radius: 15px; 
+  border: none;
+  background-color: lightseagreen;
+  transition: background-color 0.3s ease;
+  color: white;
+  font-size: 15px;
+}
+
+.prev_btn:hover {
+  background-color: darkseagreen;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 100px;
+  padding: 15px 0;
+}
+
+.media {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.media_img {
+  height: 30px;
+  transition: transform 0.3s ease;
+}
+
+.media_img:hover {
+  transform: scale(1.05);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  width: 25vw; 
+}
+
+.brand_h6 {
+  font-size: 20px; 
+  font-weight: bold;
+}
+
