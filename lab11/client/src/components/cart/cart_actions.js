@@ -4,7 +4,7 @@ export const UPDATE_ITEM_QUANTITY = 'UPDATE_ITEM_QUANTITY';
 
 export const addToCart = (item) => ({
   type: ADD_TO_CART,
-  payload: { ...item, quantity: 1 }, // Ensure default quantity is 1
+  payload: { ...item, quantity: 1 }, 
 });
 
 export const removeFromCart = (id) => ({

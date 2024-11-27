@@ -15,7 +15,6 @@ const cartReducer = (state = initialState, action) => {
         (item) => item.id === action.payload.id
       );
       if (existingItem) {
-        // If item already exists, increase quantity
         return {
           ...state,
           items: state.items.map((item) =>
@@ -25,7 +24,6 @@ const cartReducer = (state = initialState, action) => {
           ),
         };
       }
-      // Otherwise, add the item with a quantity of 1
       return {
         ...state,
         items: [...state.items, action.payload],
@@ -47,7 +45,7 @@ const cartReducer = (state = initialState, action) => {
               ? { ...item, quantity: Math.max(0, item.quantity + change) }
               : item
           )
-          .filter((item) => item.quantity > 0), // Remove items with quantity 0
+          .filter((item) => item.quantity > 0), 
       };
     }
     default:

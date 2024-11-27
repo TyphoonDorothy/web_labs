@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "./checkout.css";
 
-// ErrorMessage Component
 const ErrorMessage = ({ errors, touched }) => (
   <div className="error-messages">
     {Object.keys(errors).map((field) => {
@@ -23,7 +22,6 @@ const ErrorMessage = ({ errors, touched }) => (
 const Checkout = () => {
   const navigate = useNavigate();
 
-  // Form validation schema using Yup
   const validationSchema = Yup.object({
     firstName: Yup.string()
       .max(20, "First name must not exceed 20 characters")
@@ -44,7 +42,6 @@ const Checkout = () => {
       .required("Address is required"),
   });
 
-  // Formik configuration
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -56,7 +53,7 @@ const Checkout = () => {
     validationSchema,
     onSubmit: (values) => {
       console.log("Form submitted with values:", values);
-      navigate("/success"); // Redirect to success page
+      navigate("/success"); 
     },
   });
 
