@@ -4,10 +4,10 @@ const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" />; // Якщо користувач не авторизований, перенаправляємо на логін
+    return <Navigate to="/login" />;
   }
 
-  return children; // Якщо авторизований, відображаємо дочірні компоненти
+  return children;
 };
 
 export default ProtectedRoute;

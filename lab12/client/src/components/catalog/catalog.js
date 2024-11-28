@@ -1,4 +1,3 @@
-// src/components/catalog/catalog.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import PrimaryButton from '../primarybutton';
@@ -43,6 +42,7 @@ const Catalog = () => {
             priceOrder: selectedPriceOrder || undefined
           }
         });
+        await new Promise((resolve) => setTimeout(resolve, 500));
         setItems(response.data);
       } catch (error) {
         setError(error.message);
