@@ -1,17 +1,18 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/home/header';
-import Info from './components/home/info';
-import Prev from './components/home/prev';
-import Footer from './components/home/footer';
-import Catalog from './components/catalog/catalog';
-import { CatalogProvider } from './components/catalog/catalog_context';
-import { ItemsProvider } from './components/item/item_context';
-import Item from './components/item/item';
-import Cart from './components/cart/cart';
-import Checkout from './components/checkout/checkout';
-import Success from './components/success/success'; 
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/home/header";
+import Home from "./components/home/home"; // Import Home
+import Catalog from "./components/catalog/catalog";
+import { CatalogProvider } from "./components/catalog/catalog_context";
+import { ItemsProvider } from "./components/item/item_context";
+import Item from "./components/item/item";
+import Cart from "./components/cart/cart";
+import Checkout from "./components/checkout/checkout";
+import Success from "./components/success/success";
+import Login from "./components/login/login";
+import Register from "./components/register/register";
+import ProtectedRoute from "./components/protected_route/protected_route";
+import "./App.css";
 
 const App = () => {
   return (
@@ -20,22 +21,52 @@ const App = () => {
         <ItemsProvider>
           <Header />
           <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            <Route path="/" element={<Home />} />
+
             <Route
-              path="/"
+              path="/catalog"
               element={
-                <>
-                  <Info />
-                  <Prev />
-                </>
+                <ProtectedRoute>
+                  <Catalog />
+                </ProtectedRoute>
               }
             />
-            <Route path="/catalog" element={<Catalog />} />
-            <Route path="/item/:id" element={<Item />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/success" element={<Success />} /> 
+            <Route
+              path="/item/:id"
+              element={
+                <ProtectedRoute>
+                  <Item />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <Checkout />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/success"
+              element={
+                <ProtectedRoute>
+                  <Success />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
-          <Footer />
         </ItemsProvider>
       </CatalogProvider>
     </Router>
